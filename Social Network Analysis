@@ -1,0 +1,56 @@
+class Book:
+    def __init__(self, title, author, price, quantity):
+        self.title = title
+        self.author = author
+        self.price = price
+        self.quantity = quantity
+
+class Bookstore:
+    def __init__(self):
+        self.inventory = {}
+
+    def add_book(self, book):
+        if book.title in self.inventory:
+            self.inventory[book.title].quantity += book.quantity
+        else:
+            self.inventory[book.title] = book
+
+    def display_inventory(self):
+        print("Book Inventory:")
+        for title, book in self.inventory.items():
+            print(f"{title} by {book.author} - ${book.price} ({book.quantity} in stock)")
+
+    def search_book(self, title):
+        if title in self.inventory:
+            book = self.inventory[title]
+            print(f"{book.title} by {book.author} - ${book.price} ({book.quantity} in stock)")
+        else:
+            print(f"Book with title '{title}' not found in the inventory.")
+
+    def sell_book(self, title, quantity):
+        if title in self.inventory:
+            book = self.inventory[title]
+            if book.quantity >= quantity:
+                book.quantity -= quantity
+                print(f"Sold {quantity} copies of {book.title}. Total cost: ${book.price * quantity}")
+            else:
+                print(f"Insufficient stock for {book.title}. Available stock: {book.quantity}")
+        else:
+            print(f"Book with title '{title}' not found in the inventory.")
+
+# Example usage
+bookstore = Bookstore()
+
+book1 = Book("The Great Gatsby", "F. Scott Fitzgerald", 15.99, 50)
+book2 = Book("To Kill a Mockingbird", "Harper Lee", 12.99, 30)
+
+bookstore.add_book(book1)
+bookstore.add_book(book2)
+
+bookstore.display_inventory()
+
+bookstore.search_book("The Great Gatsby")
+
+bookstore.sell_book("To Kill a Mockingbird", 10)
+
+bookstore.display_inventory()
